@@ -1,0 +1,26 @@
+How to build googletest using MinGW and add to project
+1. Make sure, MinGW/bin is on the path
+2. Make sure, MinGW/msys/bin/sh.exe doesn't exist on your path.
+3. On googletest directory, create build director using powershell command line interface
+    mkdir build
+4. configure using cmake
+    cmake .. -G "MinGW Makefiles"
+    
+    -G Options tell Cmake to create makefile for MinGW.
+5. Build using mingw32-make
+    mingw32-make
+
+Add googletest static library to project
+
+In CMakeLists.txt
+
+  set(ENV{GMOCK_HOME} Path to googletest directory) # set GMOCK_HOME as environment variable
+  include_directories($ENV{GMOCK_HOME}/googlemock/include $ENV{GMOCK_HOME}/googletest/include)
+  link_directories($ENV{GMOCK_HOME}/mybuild/lib)
+  
+  ...
+  
+  add_executable(test ${sources})
+  target_link_libraries(test pthread)
+  target_link_libraries(test gmock)
+  target_link_libraries(test gtest)
